@@ -46,6 +46,7 @@
  *
  -->
 <div id="controls">
+	<p><strong>View:</strong> <a onClick="centerOn('main')" style=">Main Campus</a> / <a onClick="centerOn('ventures')">South Campus</a></p>
 	<a class="threeD all" onClick="toggleMarkers('all')">All</a>
 	<a class="threeD red" onClick="toggleMarkers('1')">Academic Buildings</a>
 	<a class="threeD blue" onClick="toggleMarkers('2')">Art &amp; Theater</a>
@@ -291,6 +292,16 @@ function toggleMarkers(category){
 	} else {
 		show(category);
 		hide(category);
+	}
+}
+function centerOn(location){
+	if (location == "ventures"){
+		ventures = new google.maps.LatLng(39.417646, -87.330623);
+		map.setCenter(ventures);
+		map.setZoom(17);
+	} else {
+		map.setCenter(RoseHulman);
+		map.setZoom(15);
 	}
 }
 function initialize(){
