@@ -1,17 +1,20 @@
 #Google Map for Rose-Hulman
 
-This macro (InteractiveMap.cshtml) contains the [Google Map API JavaScript v3](https://developers.google.com/maps/faq) to render an interactive campus map for the Rose-Hulman.edu Website.
+This macro contains the [Google Map API JavaScript v3](https://developers.google.com/maps/faq) to render an interactive campus map for the Rose-Hulman.edu Website.
 
 This documentation consists of resources, data structure and flow, and the defined functions for initializing the map. There are many tools and resources available to continue the customization of this map. Please use the resources below for more details.
 
 ##Categories
 
-1. Academics - Red
-2. Arts - Blue
-3. Athletics - Green
-4. Parking - Black "P"
-5. Administrative - Grey
-6. Student Life - Purple
+1. Academic
+2. Dining
+3. Recreation
+4. Housing
+5. Support
+6. Parking
+7. Religion
+8. Police
+9. Health
 
 ##Resources
 The following is a list of resources for the API documentation, key and information to login to the API console:
@@ -23,92 +26,66 @@ The following is a list of resources for the API documentation, key and informat
 ##Structure
 The data structure follows below:
 
-1. Button Controls - Calling `toggleMarkers('CAT_ID')`
-2. Container div with ID (map) - define width and height
-3. API Script
-4. InfoBox Script (/scripts/interactive-campus-map/campusMapOther.js)
-5. Map Initialization (see "Functions" for more details)
-	* Marker Locations
-	* Map Styles
-	* Info Window
-	* Marker Initialization
-	* Show/Hide Category
-	* Initialize
+1. Variable Calls
+2. Icon definition
+3. Functions:
+	* createMarker
+	* show
+	* hide
+	* boxclick
+	* showLocation
+	* makeSidebar
+	* myclick
+	* init
+	* Parse Data
+5. Map Options
+6. Build Map and Sidebar
 
 ##Variables
 
-* Map - defines the map, used throughout
-* RoseHulman - defines the center of the map
-* gMarkers - Array, for pulling in the data used for the user buttons
-* Marker, I, icon, image - all used for marker creation.
-* Academics, arts, athletics, park, admin, studentLife - icons for the respective marker types
-	* Located in the media library -> Design -> Interactive Campus Map
-* Locations - array for the locations, used in `setMarkerLocations()`
-* Current - utilized to store the current selected infoBox, to force one open at a time. Used in `defineInfoWindow()`
+* var media = Parameter to select the map data item within Umbraco media picker
+* gmarkers[] = array of map markers, assigned a gicon[category], and location via Map Data
+* gicons[] = array for marker categories and icon assignment, hard coded icon locations
+* openedInfoWindow = sets a blank info window on load, assigned to a clicked map item
+* side_bar_html = list rendered to the sidebar on a selected category
+* marker = Google Map Marker, shows on category selection
+* name, lat, lng, category, html = Pulls data from parsed data of the map data htm file.
+* point = uses the lat, lng variables to assign the location
+* map = map creation variable
 
 ##Functions
 
 The functions defined for this initial phase of the campus map are defined below:
 
-###setMarkerLocations()
-Defines a list of locations in an array, everything in the array is stored as a string. HTML is permitted in the description area. NOTE: The longitude is first, latitude is second.
+###createMarker(point, name, category, html)
+* Creates the marker and stores the data in the marker array.
+* Defines the infoWindow on marker selection, and closes it when neccessary.
 
-	Locations = [
-		{"id":"idNum",
-		"category":"1-6 (see note above)",
-		"campus_location":"As defined by printable campus map",
-		"title":"Item Title",
-		"description":"<p>Short location description. HTML is okay here to break up the content!</p>",
-		"image":"/media/NUMBER/PathToFile.ext",
-		"longitude":"See resources for how to find",
-		"latitude":"See resources for how to find"
-		}, {NEXT ITEM HERE}
-	];
-
-###setMapStyles()
-Sets custom map styles using the styles array built into the API. See [Google Maps documentation](https://developers.google.com/maps/documentation/javascript/styling).
-Also defines which maps are available for choice, within MapTypeControlOptions.
-
-###defineInfoWindow(marker)
-Uses the InfoBox.js class to customize the infoWindow. This function currently contains the old InfoWindow code from Google, but is not currently utilized.
-
-This function is called within `MarkerInitialize()` to create the windows. Uses marker to create the HTML necessary to fill the box, also calls `hasImage(marker)` to determine if an image exists.
-
-###hasImage(marker)
-Determines whether a location has an image to display, does so if it exists. Otherwise returns nothing.
-
-###markerInitialize()
-Defines each marker by running through each iteration of location. Also uses a switch statement to determine which category and icon to use. This object can be defined with whatever information you wish. In this example, you CANNOT use campus_location in any other function, as it is not a defined object of marker. If you want to use an item within another function, it MUST be defined here.
-
-	marker = new google.maps.Marker({
-		// Marker Position
-		position: new google.maps.LatLng(locations[i].latitude, locations[i].longitude),
-		title: locations[i].title, // Marker Title
-		icon: icon, // Which icon
-		map:map, // what map
-		category: locations[i].category, // what category
-		animation: google.maps.Animation.DROP, // drop animation, bounce is also available
-		image:locations[i].image, // image location
-		description: locations[i].description, // description
-		id: locations[i].id // location ID
-	});
-
-Calls `defineInfoWindow(marker)` to create the information windows. Also pushes marker details to gMarkers array for show/hide functionality.
-
-###showAll()
-For loop to set ALL items in gMarkers to show on the map. Uses `setMap(map)` to do so.
 
 ###show(category)
-For loop and if statement to set category's items to show, only if current category. Uses `setMap(map)` to do so.
+* Show all markers of a particular category, and ensures the checkbox is checked
 
 ###hide(category)
-For loop and if statement to set category's items to hide, only if current category. Uses `setMap(null)` to do so.
+* Hide all markers of a particular category and ensures the checkbox is cleared
+* Closes open infoWindow if part of that category
 
-###toggleMarkers(category)
-If statement to determine to show all, or show/hide based on the category selected in the user interaction.
+###boxclick(box, category)
+* Decides when a checkbox is clicked and calls the show/hide functions as appropriate
+* Builds the sidebar list as defined by the category.
 
-###initialize(){
-Runs the functions to initialize the map. This must be called somehow to show the map. Runs:
-* `setMarkerLocations()`
-* `setMapStyles()`
-* `markerInitialize()`
+###showLocation(name)
+* Shows a specific marker, should it be clicked on by the name in the sidebar list
+
+###makeSidebar()
+* Builds the sidebar based on the category(-ies) selected by the user, lists all items in said category(-ies)
+
+###myclick(i)
+* Picks up the click and opens the info window of the specific item
+
+###init(){
+* Definition of which markers should be shown/hidden on load (all are shown by default)
+
+###Parse Data
+* Extracts the data from the selected .htm file
+
+`@Model.MediaById(media).Url` is an Umbraco specific way of selecting the .htm file.

@@ -1,0 +1,34 @@
+@inherits umbraco.MacroEngines.DynamicNodeContext
+
+@* Inputs define clickable parts of the map. 
+ * To start with a certain area checked off, comment the hide(category) in CampusMap.cshtml
+ * AND add checked to the checkbox.
+ * These boxes should coincide with the markers gicons["CATEGORY"], otherewise they will not work.
+ * All pieces of information (id, type, onclick) must be present to work correctly.
+ * Add checked to the item you wish to have active
+*@
+
+<h3 style="font-size:1.17em; margin:.25em 0; font-weight:bold;">Sort By</h3>
+<div class="checkbox">
+	<div style="float:left; width:48%;">
+		<input type="checkbox" id="academicbox" onclick="boxclick(this,'academic')" checked /><label for="academicbox">Academic</label>
+		 <br />
+		<input type="checkbox" id="diningbox" onclick="boxclick(this,'dining')" /><label for="diningbox">Dining</label>
+		 <br />
+		<input type="checkbox" id="healthbox" onclick="boxclick(this,'health')" /><label for="healthbox">Health</label>
+		 <br />
+		<input type="checkbox" id="housingbox" onclick="boxclick(this,'housing')" /><label for="housingbox">Housing</label>
+		 <br />
+		<input type="checkbox" id="recreationbox" onclick="boxclick(this,'recreation')" /><label for="recreationbox">Recreation</label>
+	</div>
+	<div style="float:left; width:48%;">
+		<input type="checkbox" id="policebox" onclick="boxclick(this,'police')" /><label for="policebox">Police</label>
+		 <br />
+		<input type="checkbox" id="religionbox" onclick="boxclick(this,'religion')" /><label for="religionbox">Religion</label>
+		 <br />
+		<input type="checkbox" id="supportbox" onclick="boxclick(this,'support')" /><label for="supportbox">Support</label>
+		 <br />
+		<input type="checkbox" id="parkingbox" onclick="boxclick(this,'parking')" /><label for="parkingbox">Parking</label>
+	</div>
+	<div style="clear:both;"> </div>
+</div>
