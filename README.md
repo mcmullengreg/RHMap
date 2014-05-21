@@ -89,3 +89,15 @@ The functions defined for this initial phase of the campus map are defined below
 * Extracts the data from the selected .htm file
 
 `@Model.MediaById(media).Url` is an Umbraco specific way of selecting the .htm file.
+
+##HTML File Updates
+To update the html file, download a copy of the most current version. An `<hr />` designates a separation of map items. A pipe (`|`) designates a new item within the map item.
+
+Full structure:
+
+    Item Name|Longitude|Latitude|Category
+    <div class="preview">
+        <h2>Item Name</h2>
+        <p>Item description</p>
+    </div>
+   <hr />
