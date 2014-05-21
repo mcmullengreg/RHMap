@@ -95,7 +95,7 @@ To update the html file, download a copy of the most current version. An `<hr />
 
 Full structure:
 
-    Item Name|Longitude|Latitude|Category
+    Item Name|Longitude|Latitude|Category|
     <div class="preview">
         <h2>Item Name</h2>
         <p>Item description</p>
