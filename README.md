@@ -100,4 +100,4 @@ Full structure:
         <h2>Item Name</h2>
         <p>Item description</p>
     </div>
-   <hr />
+    <hr />
